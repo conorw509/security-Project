@@ -16,9 +16,6 @@ import javax.sql.DataSource;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-//
-//    @Autowired
-//    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     private DataSource dataSource;
@@ -29,22 +26,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-
-//    String sql = "SELECT u.email name, u.password pass,u.repassword re, u.authority role FROM "+
-//            "user1 u INNER JOIN users_roles a on u.user_id=a.user_id WHERE "+
-//            " u.email = ?";
-
-//    @Autowired
-//    UserService userService;
-
-
-//    @Value("${spring.queries.users-query}")
-//    private String user;
-//
-//    @Value("${spring.queries.roles-query}")
-//    private String role;
-
-    //    String sql = "SELECT email, password FROM user WHERE email=? AND password =?";
     @Override
     protected void configure(AuthenticationManagerBuilder auth)
             throws Exception {

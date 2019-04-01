@@ -8,7 +8,7 @@ import org.springframework.stereotype.Controller;
 @SpringBootApplication
 @Controller
 @Configuration
-@ComponentScan(basePackages = {"com.controller","com.repository","com.service","com.configuration"})
+@ComponentScan(basePackages = {"com.controller","com.service","com.configuration"})
 public class LoginApplication {
 
     public static void main(String[] args) {

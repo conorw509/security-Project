@@ -1,12 +1,9 @@
 package com.controller;
 
 import javax.validation.Valid;
-
 import com.model.User;
 import com.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,7 +39,6 @@ public class LoginController {
                                       @Valid User user, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
         user.setEmail(email);
-        // User userExists = userService.findUserByEmail(user.getEmail());
         boolean userExists = userService.findUserByEmail(user);
         if (userExists) {
             bindingResult
