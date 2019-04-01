@@ -32,9 +32,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         auth.
                 jdbcAuthentication()
                 .usersByUsernameQuery("SELECT email, password, enabled " +
-                        "FROM user1 " +
+                        "FROM users " +
                         "WHERE email = ?")
-                .authoritiesByUsernameQuery("select email AS username, authority AS authority from user1 u, users_role ur,role1 r where (r.role_id=ur.role_id) and (u.user_id=ur.user_id) AND email=?; ")
+                .authoritiesByUsernameQuery("select email AS username, authority AS authority from users u,roles r where (r.role_id=u.user_id) AND email=?")
                 .dataSource(dataSource)
                 .rolePrefix("ROLE_")
               .passwordEncoder(bCryptPasswordEncoder);

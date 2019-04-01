@@ -8,6 +8,16 @@ import javax.validation.constraints.Size;
 @FieldMatch(first = "repassword", second = "password", message = "The password fields must match")
 public class User {
     private int id;
+    private String Inserted;
+
+    public String getInserted() {
+        return Inserted;
+    }
+
+    public void setInserted(String inserted) {
+        Inserted = inserted;
+    }
+
     @Email(message = "*Please provide a valid Email")
     @NotEmpty(message = "*Please provide an email")
     private String email;
