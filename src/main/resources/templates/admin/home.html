@@ -25,13 +25,31 @@
                 <!--<span th:utext="${userName}"></span>-->
             </div>
             <div class="panel-body">
-                <img th:src="@{/images/beer.jpg}" class="img-responsive center-block" width="400" height="400"
-                     alt="Beer"/>
-            </div>
-            <p class="admin-message-text text-center" th:utext="${adminMessage}"></p>
-        </div>
-    </div>
+                <h1>Search</h1>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6 col-md-offset-3">
+                            <form autocomplete="off" action="#" th:action="@{/registration}"
+                                  th:object="${user}" method="post" class="form-horizontal"
+                                  role="form">
+                                <div class="form-group">
+                                    <div class="col-sm-9">
+                                        <!--<label th:if="${#fields.hasErrors('name')}" th:errors="*{}"-->
+                                        <!--class="validation-message">-->
+                                        </label>
+                                        <input type="text" placeholder="Search"
+                                               class="form-control"/>
+                                        <!--th:field="*{}"-->
+                                    </div>
+                                </div>
+                                <p class="admin-message-text text-center" th:utext="${adminMessage}"></p>
+                            </form>
 
-</div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
 </body>
 </html>

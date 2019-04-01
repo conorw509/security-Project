@@ -4,6 +4,8 @@ import javax.validation.Valid;
 import com.model.User;
 import com.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,7 +52,6 @@ public class LoginController {
         } else {
             userService.saveUser(user);
             userService.update(user);
-//            userService.upd(user);
             modelAndView.addObject("successMessage", "User has been registered successfully");
             modelAndView.addObject("user", new User());
             modelAndView.setViewName("registration");
@@ -63,10 +64,8 @@ public class LoginController {
     public ModelAndView home() {
         User user = new User();
         ModelAndView modelAndView = new ModelAndView();
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-////        Boolean u = userService.findUserByEmail(auth.getName());
-//        modelAndView.addObject("userName", "Welcome " + user.getName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
-//        modelAndView.addObject("adminMessage", "Content Available Only for Users with Admin Role");
+       // Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        modelAndView.addObject("adminMessage", "Please Search Content");
         modelAndView.setViewName("admin/home");
         return modelAndView;
     }
