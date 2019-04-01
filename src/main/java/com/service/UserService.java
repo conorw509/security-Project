@@ -45,7 +45,7 @@ public class UserService {
 //    }
 
     public Boolean findUserByEmail(User email) {
-        String sql = "SELECT * FROM user WHERE email = ?";
+        String sql = "SELECT * FROM user1 WHERE email = ?";
         return jdbcTemplate.execute(sql, new PreparedStatementCallback<Boolean>() {
             @Override
             public Boolean doInPreparedStatement(PreparedStatement preparedStatement) throws SQLException, DataAccessException {
@@ -72,7 +72,7 @@ public class UserService {
 //        return userRepository.save(user);
 
 
-        String query = "insert into user(name,last_name,email,password,repassword) values(?,?,?,?,?)";
+        String query = "insert into user1(name,last_name,email,password,repassword) values(?,?,?,?,?)";
 
         return jdbcTemplate.execute(query, new PreparedStatementCallback<Boolean>() {
             @Override

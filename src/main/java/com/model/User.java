@@ -19,7 +19,7 @@ import java.util.Set;
 //@NoArgsConstructor
 //@Entity
 //@Table(name = "user")
-//@FieldMatch(first = "repassword", second = "password", message = "The password fields must match")
+@FieldMatch(first = "repassword", second = "password", message = "The password fields must match")
 public class User {
 
 //    @Id

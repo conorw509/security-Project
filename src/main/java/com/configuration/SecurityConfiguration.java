@@ -1,9 +1,13 @@
 package com.configuration;
 
+import com.model.User;
+import com.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -13,6 +17,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.sql.DataSource;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 @Configuration
 @EnableWebSecurity
@@ -27,19 +34,22 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-//    @Value("${spring.queries.users-query}")
-//    private String usersQuery;
-//
-//    @Value("${spring.queries.roles-query}")
-//    private String rolesQuery;
+//    @Autowired
+//    UserService userService;
 
+
+//
+    @Value("${spring.queries.users-query}")
+    private String sql;
+
+//    String sql = "SELECT email, password FROM user WHERE email=? AND password =?";
     @Override
     protected void configure(AuthenticationManagerBuilder auth)
             throws Exception {
         auth.
                 jdbcAuthentication()
-//                .usersByUsernameQuery(usersQuery)
-//                .authoritiesByUsernameQuery(rolesQuery)
+                .usersByUsernameQuery(sql)
+                .authoritiesByUsernameQuery(sql)
                 .dataSource(dataSource)
                 .passwordEncoder(bCryptPasswordEncoder);
     }
@@ -70,5 +80,4 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .ignoring()
                 .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**");
     }
-
 }
