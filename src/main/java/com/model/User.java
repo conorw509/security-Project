@@ -48,7 +48,15 @@ public class User {
     @Size(min = 3, max = 20, message = "*Last Name must be between 3 and 20 characters")
     private String lastName;
     //    @Column(name = "active")
-//    private int active;
+    private String role;
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 //    @ManyToMany(cascade = CascadeType.ALL)
 //    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 //    private Set<Role> roles;

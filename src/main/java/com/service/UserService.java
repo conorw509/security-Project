@@ -1,6 +1,5 @@
 package com.service;
 
-import com.model.Role;
 import com.model.User;
 //import com.repository.RoleRepository;
 //import com.repository.UserRepository;
@@ -9,8 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,6 +25,9 @@ public class UserService {
 
     @Autowired
     JdbcTemplate jdbcTemplate;
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
+
 
 //    @Autowired
 //    UserRepository userRepository;
@@ -72,7 +77,7 @@ public class UserService {
 //        return userRepository.save(user);
 
 
-        String query = "insert into user1(name,last_name,email,password,repassword) values(?,?,?,?,?)";
+        String query = "insert into user1(name,last_name,email,password,repassword,authority) values(?,?,?,?,?,?)";
 
         return jdbcTemplate.execute(query, new PreparedStatementCallback<Boolean>() {
             @Override
@@ -82,8 +87,9 @@ public class UserService {
                 preparedStatement.setString(1, u.getName());
                 preparedStatement.setString(2, u.getLastName());
                 preparedStatement.setString(3, u.getEmail());
-                preparedStatement.setString(4, PasswordEncrypt.encryptPassword(u.getPassword()));
-                preparedStatement.setString(5, PasswordEncrypt.encryptPassword(u.getRepassword()));
+                preparedStatement.setString(4,(bCryptPasswordEncoder.encode(u.getPassword())));
+                preparedStatement.setString(5,(bCryptPasswordEncoder.encode(u.getRepassword())));
+                preparedStatement.setString(6, "ADMIN");
 //                Role userRole = roleRepository.findByRole("ADMIN");
 //                u.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
 //                userRepository.save(u);
@@ -93,6 +99,4 @@ public class UserService {
             }
         });
     }
-
-
 }

@@ -1,13 +1,8 @@
 package com.configuration;
 
-import com.model.User;
-import com.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -17,16 +12,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import javax.sql.DataSource;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+//
+//    @Autowired
+//    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     private DataSource dataSource;
@@ -34,24 +26,37 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+
+//    String sql = "SELECT u.email name, u.password pass,u.repassword re, u.authority role FROM "+
+//            "user1 u INNER JOIN users_roles a on u.user_id=a.user_id WHERE "+
+//            " u.email = ?";
+
 //    @Autowired
 //    UserService userService;
 
 
+//    @Value("${spring.queries.users-query}")
+//    private String user;
 //
-    @Value("${spring.queries.users-query}")
-    private String sql;
+//    @Value("${spring.queries.roles-query}")
+//    private String role;
 
-//    String sql = "SELECT email, password FROM user WHERE email=? AND password =?";
+    //    String sql = "SELECT email, password FROM user WHERE email=? AND password =?";
     @Override
     protected void configure(AuthenticationManagerBuilder auth)
             throws Exception {
         auth.
                 jdbcAuthentication()
-                .usersByUsernameQuery(sql)
-                .authoritiesByUsernameQuery(sql)
+                .usersByUsernameQuery("SELECT email, password, enabled " +
+                        "FROM user1 " +
+                        "WHERE email = ?")
+                .authoritiesByUsernameQuery("select email AS username, authority AS authority from user1 u, users_role ur,role1 r where (r.role_id=ur.role_id) and (u.user_id=ur.user_id) AND email=?; ")
                 .dataSource(dataSource)
-                .passwordEncoder(bCryptPasswordEncoder);
+                .rolePrefix("ROLE_")
+              .passwordEncoder(bCryptPasswordEncoder);
     }
 
     @Override
@@ -65,7 +70,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()
                 .authenticated().and().csrf().disable().formLogin()
                 .loginPage("/login").failureUrl("/login?error=true")
-                .defaultSuccessUrl("/admin/home")
+                .defaultSuccessUrl("/home")
                 .usernameParameter("email")
                 .passwordParameter("password")
                 .and().logout()
