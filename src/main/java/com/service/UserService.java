@@ -21,7 +21,7 @@ public class UserService {
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public Boolean findUserByEmail(User email) {
-        String sql = "SELECT * FROM user1 WHERE email = ?";
+        String sql = "SELECT * FROM users WHERE email = ?";
         return jdbcTemplate.execute(sql, new PreparedStatementCallback<Boolean>() {
             @Override
             public Boolean doInPreparedStatement(PreparedStatement preparedStatement) throws SQLException, DataAccessException {
@@ -76,23 +76,4 @@ public class UserService {
             }
         });
     }
-
-//
-//    public Boolean upd(User u) {
-//        String nelt = "insert into users_role(user_id,role_id) values(?,?)";
-//
-//        return jdbcTemplate.execute(nelt, new PreparedStatementCallback<Boolean>() {
-//            @Override
-//            public Boolean doInPreparedStatement(PreparedStatement preparedStatement)
-//                    throws SQLException, DataAccessException {
-//
-//                preparedStatement.setInt(1, u.getId());
-//                preparedStatement.setInt(2, u.getId());
-//
-//                return preparedStatement.execute();
-//
-//            }
-//        });
-//
-//    }
 }
