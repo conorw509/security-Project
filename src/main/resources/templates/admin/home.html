@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.w3.org/1999/xhtml">
 
 <head>
     <title>Admin Page</title>
@@ -8,7 +8,21 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
 </head>
+<style>
+
+    th, td {
+        padding: 15px;
+    }
+
+    form {
+        margin: 0px 800px 0px 0px;
+    }
+
+
+</style>
 
 <body>
 <div class="container">
@@ -24,32 +38,78 @@
             <div class="panel-heading">
                 <!--<span th:utext="${userName}"></span>-->
             </div>
+
             <div class="panel-body">
-                <h1>Search</h1>
+                <h1>Search Movies</h1>
                 <div class="container">
                     <div class="row">
                         <div class="col-md-6 col-md-offset-3">
                             <form autocomplete="off" action="#" th:action="@{/registration}"
-                                  th:object="${user}" method="post" class="form-horizontal"
+                                  th:object="${movies}" method="get" class="form-horizontal"
                                   role="form">
                                 <div class="form-group">
                                     <div class="col-sm-9">
                                         <!--<label th:if="${#fields.hasErrors('name')}" th:errors="*{}"-->
                                         <!--class="validation-message">-->
                                         </label>
-                                        <input type="text" placeholder="Search"
-                                               class="form-control"/>
                                         <!--th:field="*{}"-->
                                     </div>
                                 </div>
-                                <p class="admin-message-text text-center" th:utext="${adminMessage}"></p>
-                            </form>
 
+                            </form>
+                            <p class="admin-message-text text-center" th:utext="${adminMessage}"></p>
                         </div>
 
+                        <div layout:fragment="content" class="container mySpace">
+                            <form th:action="@{/home}" class="form-inline" method="POST" >
+                                <div class="form-group mb-2">
+
+                                    <input type="text" class="form-control" name="name" placeholder="Search"
+
+                                    />
+                                    <input type="submit" value="Search" class="btn btn-primary"/>
+                                </div>
+
+
+                                <div align="center" th:if="${param.error}">
+                                    <p style="font-size: 20; color: #FF1C19;">Error</p>
+                                </div>
+                            </form>
+                            <div class="card">
+                                <div class="card card-body">
+                                    <table class="table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th>Title</th>
+                                            <th>Year</th>
+                                            <th>Length</th>
+                                            <th>Language</th>
+
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        <tr
+                                            th:each="movies:${moviesList}">
+                                            <td th:text="${movies.title}"></td>
+
+                                            <td th:text="${movies.year}"></td>
+                                            <td th:text="${movies.movieLength}"></td>
+                                            <td th:text="${movies.movieLanguage}"></td>
+                                            <!--<td><a  th:href="@{/addTask(email=${user.email})}" class="btn btn-dark">AddTask</a></td>-->
+                                        </tr>
+                                        </tbody>
+
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
                 </div>
-
             </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
