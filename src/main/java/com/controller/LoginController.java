@@ -76,7 +76,7 @@ public class LoginController {
 //        movies.setMovieLength(movieLength);
 //        movies.
         ModelAndView modelAndView = new ModelAndView();
-        model.addAttribute(userService.findMovies());
+        //model.addAttribute(userService.findMovies());
        // Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         modelAndView.addObject("adminMessage", "Please Search Content");
         modelAndView.setViewName("admin/home");
