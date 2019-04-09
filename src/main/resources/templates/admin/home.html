@@ -100,12 +100,12 @@
                                         </thead>
                                         <tbody>
 
-                                        <tr th:each="movies:${moviesList}">
-                                            <td th:text="${movies.title}"></td>
+                                        <tr th:each="moviesList:${moviesList}">
+                                            <td th:text="${moviesList.title}"></td>
 
-                                            <td th:text="${movies.year}"></td>
-                                            <td th:text="${movies.movieLength}"></td>
-                                            <td th:text="${movies.movieLanguage}"></td>
+                                            <td th:text="${moviesList.year}"></td>
+                                            <td th:text="${moviesList.movieLength}"></td>
+                                            <td th:text="${moviesList.movieLanguage}"></td>
                                             <!--<td><a  th:href="@{/addTask(email=${user.email})}" class="btn btn-dark">AddTask</a></td>-->
                                         </tr>
                                         </tbody>

@@ -1,6 +1,7 @@
 package com.service;
 
 import com.model.ConfirmationToken;
+import com.model.Movies;
 import com.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -14,6 +15,8 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Service("userService")
@@ -130,31 +133,35 @@ public class UserService {
         return customer;
     }
 
-    //
-//    public Boolean findMovies(Movies u) {
-//
-//        ArrayList<Movies> moviesList = new ArrayList<Movies>();
-//
-//        ResultSet resultset = statement.executeQuery(sql)
-//        String query = " SELECT * from movies where title=? and year=? and movieLength=? and movieLanguage=?";
-//        return jdbcTemplate.execute(query, new PreparedStatementCallback<Boolean>() {
-//            @Override
-//            public Boolean doInPreparedStatement(PreparedStatement preparedStatement) throws SQLException, DataAccessException {
-//
-//                preparedStatement.setString(1, u.getTitle());
-//                preparedStatement.setInt(2, u.getYear());
-//                preparedStatement.setInt(3, u.getMovieLength());
-//                preparedStatement.setString(4, u.getMovieLanguage());
-//                ResultSet rs;
-//                rs = preparedStatement.executeQuery();
-//                while (rs.next()) {
-//                    moviesList.add(new Movies(rs.getString("title"), rs.getInt("year"), rs.getInt("movieLength"), rs.getString("movieLanguage")));
-//                }
-//                return true;
-//
-//            }
-//        });
-//    }
+
+    public List<Movies> findMovies() {
+
+        ArrayList<Movies> moviesList = new ArrayList<Movies>();
+        String query = " SELECT * from movies";
+        try {
+            jdbcTemplate.execute(query, new PreparedStatementCallback<Boolean>() {
+                @Override
+                public Boolean doInPreparedStatement(PreparedStatement preparedStatement) throws SQLException, DataAccessException {
+                    ResultSet rs;
+                    rs = preparedStatement.executeQuery();
+                    while (rs.next()) {
+                        Movies u = new Movies();
+                        u.setTitle(rs.getString("title"));
+                        u.setYear(rs.getInt("year"));
+                        u.setMovieLength(rs.getInt("movieLength"));
+                        u.setMovieLanguage(rs.getString("movieLanguage"));
+                        moviesList.add(u);
+                    }
+
+                    return true;
+                }
+            });
+        } catch (Exception e) {
+        }
+
+        return moviesList;
+    }
+
     private static java.sql.Date getCurrentDate() {
         java.util.Date today = new java.util.Date();
         return new java.sql.Date(today.getTime());

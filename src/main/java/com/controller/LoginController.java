@@ -1,6 +1,7 @@
 package com.controller;
 
 import javax.validation.Valid;
+
 import com.model.Contactf;
 import com.model.Movies;
 import com.model.User;
@@ -18,6 +19,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
+import java.util.Map;
+
 @Controller
 public class LoginController {
 
@@ -74,17 +79,16 @@ public class LoginController {
 
 
     @RequestMapping(value = "/contact", method = RequestMethod.POST)
-    public ModelAndView contactPost(@RequestParam("input")String input,
-                                    @RequestParam("name")String name,
-                                    @RequestParam("lname")String subject,
-            @Valid Contactf con, BindingResult bindingResult) {
+    public ModelAndView contactPost(@RequestParam("input") String input,
+                                    @RequestParam("name") String name,
+                                    @RequestParam("lname") String subject,
+                                    @Valid Contactf con, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
         User user = new User();
 
         if (bindingResult.hasErrors()) {
             modelAndView.setViewName("contact");
-        }
-        else {
+        } else {
             SimpleMailMessage mailMessage = new SimpleMailMessage();
 
             mailMessage.setFrom(name);
@@ -183,25 +187,16 @@ public class LoginController {
 
 
     @RequestMapping(value = "/home", method = RequestMethod.GET)
-    public ModelAndView home(
-//    @RequestParam("title") String title,
-//                             @RequestParam("year") String year,
-//                             @RequestParam("movieLength") String movieLength,
-//                             @RequestParam("movieLanguage") String movieLanguage,
-            @Valid Movies movies,
-            Model model) {
+    public String  home(Map<String,Object> map) {
+//        List<Movies> movies1 = userService.findMovies();
+        map.put("moviesList",userService.findMovies());
 
+//        model.addAttribute("moviesList", userService.findMovies());
 
-//        movies.setTitle(title);
-//        movies.setYear(year);
-//        movies.setMovieLength(movieLength);
-//        movies.
-        ModelAndView modelAndView = new ModelAndView();
-        //model.addAttribute(userService.findMovies());
-        // Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        modelAndView.addObject("adminMessage", "Please Search Content");
-        modelAndView.setViewName("admin/home");
-        return modelAndView;
+       // modelAndView.addObject("moviesList", new Movies());
+//        modelAndView.addObject("adminMessage", "Please Search Content");
+//        modelAndView.setViewName("admin/home");
+        return "admin/home";
     }
 
 
