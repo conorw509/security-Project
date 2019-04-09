@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org" xmlns:labelth="http://java.sun.com/JSP/Page"
+      xmlns:input="http://www.w3.org/1999/XSL/Transform">
 
 <head>
     <title>Spring Security Tutorial</title>
@@ -24,7 +25,14 @@
         <input type="text" id="email" name="email" th:placeholder="Email"
                class="form-control"/> <br/>
         <input type="password" th:placeholder="Password"
-               id="password" name="password" class="form-control"/> <br/>
+               id="password" name="password" class="form-control"/>
+
+        <!--<input th:text="#{label.form.login2fa}"-->
+               <!--th:placeholder="Google Authenticator Verification Code"-->
+        <!--/>-->
+
+        <!--<input type='text' name='code'/>-->
+        <!--<br/>-->
 
         <div align="center" th:if="${param.error}">
             <p style="font-size: 20; color: #FF1C19;">Email or Password invalid, please verify</p>

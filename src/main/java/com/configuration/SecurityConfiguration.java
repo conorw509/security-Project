@@ -1,8 +1,10 @@
 package com.configuration;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -26,18 +28,26 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+//    @Autowired
+//    private CustomWebAuthenticationDetailsSource authenticationDetailsSource;
+//
+//    @Autowired
+//    private CustomAuthenticationProvider customAuthenticationProvider;
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth)
             throws Exception {
-        auth.
-                jdbcAuthentication()
+        auth
+                //authenticationProvider(customAuthenticationProvider)
+                .jdbcAuthentication()
                 .usersByUsernameQuery("SELECT email, password, enabled " +
                         "FROM users " +
                         "WHERE email = ?")
                 .authoritiesByUsernameQuery("select email AS username, authority AS authority from users u,roles r where (r.role_id=u.user_id) AND email=?")
                 .dataSource(dataSource)
                 .rolePrefix("ROLE_")
-              .passwordEncoder(bCryptPasswordEncoder);
+                .passwordEncoder(bCryptPasswordEncoder);
+
     }
 
     @Override
@@ -48,8 +58,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/registration").permitAll()
+                .antMatchers("/confirm").permitAll()
                 .antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()
                 .authenticated().and().csrf().disable().formLogin()
+                //.authenticationDetailsSource(authenticationDetailsSource)
                 .loginPage("/login").failureUrl("/login?error=true")
                 .defaultSuccessUrl("/home")
                 .usernameParameter("email")

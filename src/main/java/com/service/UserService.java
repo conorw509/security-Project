@@ -1,5 +1,6 @@
 package com.service;
 
+import com.model.ConfirmationToken;
 import com.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -7,6 +8,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,13 +25,13 @@ public class UserService {
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
-    public Boolean findUserByEmail(User email) {
+    public Boolean findUserByEmail(String email) {
         try {
             String sql = "SELECT * FROM users WHERE email = ?";
             return jdbcTemplate.execute(sql, new PreparedStatementCallback<Boolean>() {
                 @Override
                 public Boolean doInPreparedStatement(PreparedStatement preparedStatement) throws SQLException, DataAccessException {
-                    preparedStatement.setString(1, email.getEmail());
+                    preparedStatement.setString(1, email);
                     ResultSet rs;
                     rs = preparedStatement.executeQuery();
 
@@ -92,7 +95,55 @@ public class UserService {
         }
         return true;
     }
-//
+
+    public Boolean saveConfrimationToken(ConfirmationToken token) {
+        try {
+            String query = "insert into confirm_token(confirmation_token,created_date,user_id,) values(?,?,?,?)";
+            return jdbcTemplate.execute(query, new PreparedStatementCallback<Boolean>() {
+                @Override
+                public Boolean doInPreparedStatement(PreparedStatement preparedStatement)
+                        throws SQLException, DataAccessException {
+
+                    preparedStatement.setString(1, token.getConfirmationToken());
+                    preparedStatement.setDate(2, getCurrentDate());
+                    preparedStatement.setObject(3, token.getUser());
+                    return preparedStatement.execute();
+
+                }
+            });
+
+        } catch (Exception e) {
+
+        }
+        return true;
+    }
+
+
+    public Boolean findConfirmationToken(String token) {
+        try {
+            String sql = "SELECT * FROM confirm_token WHERE confirmation_token = ?";
+            return jdbcTemplate.execute(sql, new PreparedStatementCallback<Boolean>() {
+                @Override
+                public Boolean doInPreparedStatement(PreparedStatement preparedStatement) throws SQLException, DataAccessException {
+                    preparedStatement.setObject(1, token);
+                    ResultSet rs;
+                    rs = preparedStatement.executeQuery();
+                    if (rs.next()) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            });
+
+
+        } catch (Exception e) {
+
+        }
+        return true ;
+    }
+
+    //
 //    public Boolean findMovies(Movies u) {
 //
 //        ArrayList<Movies> moviesList = new ArrayList<Movies>();
@@ -117,5 +168,8 @@ public class UserService {
 //            }
 //        });
 //    }
-
+    private static java.sql.Date getCurrentDate() {
+        java.util.Date today = new java.util.Date();
+        return new java.sql.Date(today.getTime());
+    }
 }
