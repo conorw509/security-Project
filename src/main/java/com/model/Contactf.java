@@ -1,6 +1,7 @@
 package com.model;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 public class Contactf {
 
@@ -9,6 +10,7 @@ public class Contactf {
     @NotEmpty
     private String lname;
     @NotEmpty
+    @Size(max = 500, message = "Max 500 character")
     private String input;
 
     public String getName() {

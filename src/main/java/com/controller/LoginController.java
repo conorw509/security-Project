@@ -1,8 +1,6 @@
 package com.controller;
 
 import javax.validation.Valid;
-
-import com.model.ConfirmationToken;
 import com.model.Contactf;
 import com.model.Movies;
 import com.model.User;
@@ -20,10 +18,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.Calendar;
-import java.util.Locale;
-
 @Controller
 public class LoginController {
 
@@ -80,12 +74,27 @@ public class LoginController {
 
 
     @RequestMapping(value = "/contact", method = RequestMethod.POST)
-    public ModelAndView contactPost(
-                                    @Valid Contactf user, BindingResult bindingResult) {
+    public ModelAndView contactPost(@RequestParam("input")String input,
+                                    @RequestParam("name")String name,
+                                    @RequestParam("lname")String subject,
+            @Valid Contactf con, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
+        User user = new User();
+
         if (bindingResult.hasErrors()) {
             modelAndView.setViewName("contact");
-        } else {
+        }
+        else {
+            SimpleMailMessage mailMessage = new SimpleMailMessage();
+
+            mailMessage.setFrom(name);
+            mailMessage.setTo("secureApp@mail.com");
+            mailMessage.setSubject(subject);
+            mailMessage.setText(input);
+            mailMessage.setCc(name);
+            emailSenderService.sendEmail(mailMessage);
+
+            modelAndView.addObject("successMessage", "Email Sent!");
             modelAndView.addObject("contactf", new Contactf());
             modelAndView.setViewName("contact");
         }
@@ -97,7 +106,6 @@ public class LoginController {
     public ModelAndView createNewUser(@RequestParam("email") String email,
                                       @Valid User user, BindingResult bindingResult, WebRequest request) {
         ModelAndView modelAndView = new ModelAndView();
-        // user.setEmail(email);
         boolean userExists = userService.findUserByEmail(email);
         if (userExists) {
             bindingResult
@@ -108,36 +116,11 @@ public class LoginController {
             modelAndView.setViewName("registration");
         } else {
             user.setEnabled(true);
-            User registered = userService.saveUser(user);
+            userService.saveUser(user);
             userService.update(user);
-
-
-//            try {
-//                String appUrl = request.getContextPath();
-//                eventPublisher.publishEvent(new OnRegistrationCompleteEvent
-//                        (registered, request.getLocale(), appUrl));
-//            } catch (Exception me) {
-            //  return new ModelAndView("emailError", "user", user);
-//            }
-
-            ConfirmationToken confirmationToken = new ConfirmationToken(user);
-            //   confirmationTokenRepository.save(confirmationToken);
-            userService.saveConfrimationToken(confirmationToken);
-
-            SimpleMailMessage mailMessage = new SimpleMailMessage();
-            mailMessage.setTo(user.getEmail());
-            mailMessage.setSubject("Complete Registration!");
-            mailMessage.setFrom("chand312902@gmail.com");
-            mailMessage.setText("To confirm your account, please click here : "
-                    + "http://localhost:8090/confirm-account?token=" + confirmationToken.getConfirmationToken());
-
-//            SimpleMailMessage mailMessage = new SimpleMailMessage();
-//            mailMessage.setFrom(user.getEmail());
-//            mailMessage.setTo("rc@feedback.com");
-//            mailMessage.setSubject("New feedback from " + user.getName());
-//            mailMessage.setText(confirmationToken.getConfirmationToken());
-
-            emailSenderService.sendEmail(mailMessage);
+//
+//            ConfirmationToken confirmationToken = new ConfirmationToken(user);
+//            userService.saveConfrimationToken(confirmationToken);
 
             modelAndView.addObject("emailId", user.getEmail());
             modelAndView.addObject("successMessage", "User has been registered successfully");

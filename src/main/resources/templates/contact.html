@@ -2,20 +2,16 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Registration Form</title>
+    <title>Contact</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/registration.css}"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
+        body {font-family: Arial, Helvetica, sans-serif;}
+        * {box-sizing: border-box;}
 
         input[type=text], select, textarea {
             width: 100%;
@@ -29,7 +25,7 @@
         }
 
         input[type=submit] {
-            background-color: #00FFFF;
+            background-color: #4CAF50;
             color: white;
             padding: 12px 20px;
             border: none;
@@ -45,6 +41,9 @@
             border-radius: 5px;
             background-color: #f2f2f2;
             padding: 20px;
+        }
+        fieldset{
+            margin-right: 100%;
         }
     </style>
 </head>
@@ -68,7 +67,7 @@
             <form autocomplete="off" action="#" th:action="@{/contact}"
                   th:object="${contactf}"  method="post" class="form-horizontal"
                   role="form">
-                <h2>Registration Form</h2>
+                <h2>Contact</h2>
                 <div class="form-group">
                     <div class="col-sm-9">
                         <label th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
@@ -83,7 +82,7 @@
                         <label th:if="${#fields.hasErrors('lname')}" th:errors="*{lname}"
                                class="validation-message"></label>
                         <input type="text" th:field="*{lname}"
-                               placeholder="Last Name" class="form-control"/>
+                               placeholder="Subject" class="form-control"/>
                     </div>
                 </div>
 
@@ -91,14 +90,14 @@
                     <div class="col-sm-9">
                         <label th:if="${#fields.hasErrors('input')}" th:errors="*{input}"
                                class="validation-message"></label>
-                        <label for="subject">Subject</label>
-                        <textarea id="subject" name="subject" placeholder="Write something.."
-                                  style="height:200px"></textarea>
+                        <textarea type="text"  th:field="*{input}" placeholder="Write something.."
+                                  style="height:200px" class="form-control"></textarea>
                     </div>
                 </div>
 
                 <button type="submit" class="btn btn-primary btn-block" value="Submit">Send Email</button>
 
+                <h2><span class="text-success" th:utext="${successMessage}"></span></h2>
             </form>
         </div>
     </div>
