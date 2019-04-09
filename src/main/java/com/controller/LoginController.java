@@ -1,9 +1,7 @@
 package com.controller;
 
 import javax.validation.Valid;
-
 import com.model.Contactf;
-import com.model.Movies;
 import com.model.User;
 import com.service.UserService;
 import com.service.emailService;
@@ -12,15 +10,12 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.MessageSource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -185,19 +180,9 @@ public class LoginController {
 //        return modelAndView;
 //    }
 
-
     @RequestMapping(value = "/home", method = RequestMethod.GET)
-    public String  home(Map<String,Object> map) {
-//        List<Movies> movies1 = userService.findMovies();
-        map.put("moviesList",userService.findMovies());
-
-//        model.addAttribute("moviesList", userService.findMovies());
-
-       // modelAndView.addObject("moviesList", new Movies());
-//        modelAndView.addObject("adminMessage", "Please Search Content");
-//        modelAndView.setViewName("admin/home");
+    public String  home(Map<String,Object> map,@RequestParam(defaultValue = "") String name) {
+        map.put("moviesList",userService.findMovies(name));
         return "admin/home";
     }
-
-
 }

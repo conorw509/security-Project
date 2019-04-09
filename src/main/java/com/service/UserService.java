@@ -10,8 +10,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -134,10 +132,10 @@ public class UserService {
     }
 
 
-    public List<Movies> findMovies() {
+    public List<Movies> findMovies(String name) {
 
         ArrayList<Movies> moviesList = new ArrayList<Movies>();
-        String query = " SELECT * from movies";
+        String query = " select * from movies WHERE CONCAT(title,year,movieLength,movieLanguage)LIKE '%"+name+"%'";
         try {
             jdbcTemplate.execute(query, new PreparedStatementCallback<Boolean>() {
                 @Override
