@@ -180,6 +180,7 @@ public class LoginController {
 //        return modelAndView;
 //    }
 
+
     @RequestMapping(value = "/home", method = RequestMethod.GET)
     public String  home(Map<String,Object> map,@RequestParam(defaultValue = "") String name) {
         map.put("moviesList",userService.findMovies(name));
