@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Registration Form</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/registration.css}"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        input[type=text], select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-top: 6px;
+            margin-bottom: 16px;
+            resize: vertical;
+        }
+
+        input[type=submit] {
+            background-color: #00FFFF;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type=submit]:hover {
+            background-color: #45a049;
+        }
+
+        .container {
+            border-radius: 5px;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+<form th:action="@{/logout}" method="get">
+    <button class="btn btn-md btn-danger btn-block" name="registration"
+            type="Submit">Logout
+    </button>
+</form>
+<div>
+    <form th:action="@{/home}" method="get">
+        <button class="btn btn-md btn-danger btn-block" name="contact"
+                type="Submit">Home
+        </button>
+    </form>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <form autocomplete="off" action="#" th:action="@{/contact}"
+                  th:object="${contactf}"  method="post" class="form-horizontal"
+                  role="form">
+                <h2>Registration Form</h2>
+                <div class="form-group">
+                    <div class="col-sm-9">
+                        <label th:if="${#fields.hasErrors('name')}" th:errors="*{name}"
+                               class="validation-message"></label>
+                        <input type="text" th:field="*{name}" placeholder="Name"
+                               class="form-control"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-9">
+                        <label th:if="${#fields.hasErrors('lname')}" th:errors="*{lname}"
+                               class="validation-message"></label>
+                        <input type="text" th:field="*{lname}"
+                               placeholder="Last Name" class="form-control"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-9">
+                        <label th:if="${#fields.hasErrors('input')}" th:errors="*{input}"
+                               class="validation-message"></label>
+                        <label for="subject">Subject</label>
+                        <textarea id="subject" name="subject" placeholder="Write something.."
+                                  style="height:200px"></textarea>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block" value="Submit">Send Email</button>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

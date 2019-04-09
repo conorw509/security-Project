@@ -4,6 +4,7 @@ import com.model.ConfirmationToken;
 import com.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -50,11 +51,11 @@ public class UserService {
     }
 
 
-    public Boolean saveUser(User u) {
+    public User saveUser(User u) {
         try {
             String query = "insert into users(name,last_name,email,password,repassword,authority) values(?,?,?,?,?,?)";
 
-            return jdbcTemplate.execute(query, new PreparedStatementCallback<Boolean>() {
+            jdbcTemplate.execute(query, new PreparedStatementCallback<Boolean>() {
                 @Override
                 public Boolean doInPreparedStatement(PreparedStatement preparedStatement)
                         throws SQLException, DataAccessException {
@@ -72,7 +73,7 @@ public class UserService {
         } catch (Exception e) {
 
         }
-        return true;
+        return u;
     }
 
     public Boolean update(User u) {
@@ -98,15 +99,15 @@ public class UserService {
 
     public Boolean saveConfrimationToken(ConfirmationToken token) {
         try {
-            String query = "insert into confirm_token(confirmation_token,created_date,user_id,) values(?,?,?,?)";
+            String query = "insert into confirm_token(confirmation_token,created_date,user_id,) values(?,?)";
             return jdbcTemplate.execute(query, new PreparedStatementCallback<Boolean>() {
                 @Override
                 public Boolean doInPreparedStatement(PreparedStatement preparedStatement)
                         throws SQLException, DataAccessException {
 
-                    preparedStatement.setString(1, token.getConfirmationToken());
+                    preparedStatement.setObject(1, token);
                     preparedStatement.setDate(2, getCurrentDate());
-                    preparedStatement.setObject(3, token.getUser());
+//                    preparedStatement.setObject(3, token.getUser());
                     return preparedStatement.execute();
 
                 }
@@ -119,28 +120,14 @@ public class UserService {
     }
 
 
-    public Boolean findConfirmationToken(String token) {
-        try {
-            String sql = "SELECT * FROM confirm_token WHERE confirmation_token = ?";
-            return jdbcTemplate.execute(sql, new PreparedStatementCallback<Boolean>() {
-                @Override
-                public Boolean doInPreparedStatement(PreparedStatement preparedStatement) throws SQLException, DataAccessException {
-                    preparedStatement.setObject(1, token);
-                    ResultSet rs;
-                    rs = preparedStatement.executeQuery();
-                    if (rs.next()) {
-                        return true;
-                    } else {
-                        return false;
-                    }
-                }
-            });
+    public ConfirmationToken findConfirmationToken(String token) {
+        ConfirmationToken customer;
+        String sql = "SELECT * FROM confirm_token WHERE confirmation_token = ?";
 
-
-        } catch (Exception e) {
-
-        }
-        return true ;
+        customer = (ConfirmationToken) jdbcTemplate.queryForObject(
+                sql, new Object[]{token},
+                new BeanPropertyRowMapper(ConfirmationToken.class));
+        return customer;
     }
 
     //

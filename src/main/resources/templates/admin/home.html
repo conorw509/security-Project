@@ -18,8 +18,11 @@
     }
 
     form {
-        margin: 0px 800px 0px 0px;
+        /*margin: 0px 800px 0px 0px;*/
+        margin-right: 5%;
     }
+
+
 
 
 </style>
@@ -32,7 +35,13 @@
                 type="Submit">Logout
         </button>
     </form>
-
+<div>
+    <form th:action="@{/contact}" method="get">
+        <button class="btn btn-md btn-danger btn-block" name="contact"
+                type="Submit">Contact Us
+        </button>
+    </form>
+</div>
     <div class="panel-group" style="margin-top:40px">
         <div class="panel panel-primary">
             <div class="panel-heading">
@@ -45,8 +54,10 @@
                     <div class="row">
                         <div class="col-md-6 col-md-offset-3">
                             <form autocomplete="off" action="#" th:action="@{/registration}"
+                                  name="search"
                                   th:object="${movies}" method="get" class="form-horizontal"
                                   role="form">
+
                                 <div class="form-group">
                                     <div class="col-sm-9">
                                         <!--<label th:if="${#fields.hasErrors('name')}" th:errors="*{}"-->
@@ -89,8 +100,7 @@
                                         </thead>
                                         <tbody>
 
-                                        <tr
-                                            th:each="movies:${moviesList}">
+                                        <tr th:each="movies:${moviesList}">
                                             <td th:text="${movies.title}"></td>
 
                                             <td th:text="${movies.year}"></td>

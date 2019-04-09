@@ -1,8 +1,6 @@
 package com.model;
 
-import org.jboss.aerogear.security.otp.api.Base32;
 import validator.FieldMatch;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,6 +9,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+
 @Entity
 @FieldMatch(first = "repassword", second = "password", message = "The password fields must match")
 public class User {
@@ -36,6 +35,12 @@ public class User {
     private String lastName;
     private String role;
     private boolean isEnabled;
+
+
+    public User() {
+        super();
+        this.isEnabled = false;
+    }
 
     public boolean isEnabled() {
         return isEnabled;
