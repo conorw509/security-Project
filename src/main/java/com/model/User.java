@@ -29,15 +29,14 @@ public class User implements Serializable {
     @NotEmpty
     private String repassword;
     @NotEmpty(message = "*Please provide your name")
-    @Size(min = 3, max = 15, message = "*Name must be between 3 and 15 characters")
+    @Size(min = 5, max = 15, message = "*Name must be between 5 and 15 characters")
     private String name;
     @NotEmpty(message = "*Please provide your last name")
-    @Size(min = 3, max = 20, message = "*Last Name must be between 3 and 20 characters")
+    @Size(min = 5, max = 20, message = "*Last Name must be between 5 and 20 characters")
     private String lastName;
     private String role;
     private boolean isEnabled;
-
-
+    
     public User() {
         super();
         this.isEnabled = false;
