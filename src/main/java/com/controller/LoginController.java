@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.security.Principal;
 import java.util.Map;
 
 @Controller
@@ -58,7 +59,7 @@ public class LoginController {
     public ModelAndView contactPost(@RequestParam("input") String input,
                                     @RequestParam("name") String name,
                                     @RequestParam("lname") String subject,
-                                    @Valid Contactf con, BindingResult bindingResult) {
+                                    @Valid Contactf con, BindingResult bindingResult,Principal principal) {
         ModelAndView modelAndView = new ModelAndView();
 
         if (bindingResult.hasErrors()) {
@@ -72,8 +73,9 @@ public class LoginController {
                 mailMessage.setSubject(subject);
                 mailMessage.setText(input);
                 mailMessage.setCc(name);
-                boolean emailFound = userService.findUserByEmail(name);
-                if(emailFound) {
+              //  boolean emailFound = userService.findUserByEmail(name);
+               String currUser = principal.getName();
+                if(name.equals(currUser)) {
                     boolean sent = emailSenderService.sendEmail(mailMessage);
 
                     if (sent) {
