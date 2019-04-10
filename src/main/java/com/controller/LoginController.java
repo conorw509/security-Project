@@ -1,6 +1,7 @@
 package com.controller;
 
 import javax.validation.Valid;
+
 import com.model.Contactf;
 import com.model.User;
 import com.service.UserService;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
+
 import java.util.Map;
 
 @Controller
@@ -31,7 +33,6 @@ public class LoginController {
         modelAndView.setViewName("login");
         return modelAndView;
     }
-
 
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
     public ModelAndView registration() {
@@ -62,19 +63,31 @@ public class LoginController {
 
         if (bindingResult.hasErrors()) {
             modelAndView.setViewName("contact");
+
         } else {
-            SimpleMailMessage mailMessage = new SimpleMailMessage();
+            try {
+                SimpleMailMessage mailMessage = new SimpleMailMessage();
+                mailMessage.setFrom(name);
+                mailMessage.setTo("secureApp@mail.com");
+                mailMessage.setSubject(subject);
+                mailMessage.setText(input);
+                mailMessage.setCc(name);
+                boolean sent = emailSenderService.sendEmail(mailMessage);
 
-            mailMessage.setFrom(name);
-            mailMessage.setTo("secureApp@mail.com");
-            mailMessage.setSubject(subject);
-            mailMessage.setText(input);
-            mailMessage.setCc(name);
-            emailSenderService.sendEmail(mailMessage);
+                if (sent) {
+                    modelAndView.addObject("successMessage", "Email Sent!");
+                    modelAndView.addObject("contactf", new Contactf());
+                    modelAndView.setViewName("contact");
 
-            modelAndView.addObject("successMessage", "Email Sent!");
-            modelAndView.addObject("contactf", new Contactf());
-            modelAndView.setViewName("contact");
+                }
+                modelAndView.addObject("contactf", new Contactf());
+                modelAndView.setViewName("contact");
+
+            } catch (Exception e) {
+                modelAndView.addObject("errormsg", "Email did not send!");
+                modelAndView.addObject("contactf", new Contactf());
+                modelAndView.setViewName("contact");
+            }
         }
         return modelAndView;
     }
@@ -105,9 +118,10 @@ public class LoginController {
         }
         return modelAndView;
     }
+
     @RequestMapping(value = "/home", method = RequestMethod.GET)
-    public String  home(Map<String,Object> map,@RequestParam(defaultValue = "") String name) {
-        map.put("moviesList",userService.findMovies(name));
+    public String home(Map<String, Object> map, @RequestParam(defaultValue = "") String name) {
+        map.put("moviesList", userService.findMovies(name));
         return "admin/home";
     }
 }

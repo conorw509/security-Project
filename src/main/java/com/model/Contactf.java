@@ -3,8 +3,9 @@ package com.model;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 
-public class Contactf {
+public class Contactf implements Serializable {
 
     @Email(message = "*Please provide a valid Email")
     @NotEmpty(message = "*Please provide an email")

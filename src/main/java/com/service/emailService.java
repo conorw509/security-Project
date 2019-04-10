@@ -17,7 +17,8 @@ public class emailService {
     }
 
     @Async
-    public void sendEmail(SimpleMailMessage email) {
+        public Boolean sendEmail (SimpleMailMessage email){
         javaMailSender.send(email);
+        return true;
     }
 }

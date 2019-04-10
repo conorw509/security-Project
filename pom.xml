@@ -3,13 +3,13 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.gpch</groupId>
+    <groupId>com.conor</groupId>
     <artifactId>login</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>login</name>
-    <description>Demo project for Spring Boot</description>
+    <description>Secure Project</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -83,6 +83,20 @@
             <groupId>it.ozimov</groupId>
             <artifactId>spring-boot-email-core</artifactId>
             <version>0.6.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+
+
+        <!-- jstl for jsp page -->
+        <dependency>
+            <groupId>jstl</groupId>
+            <artifactId>jstl</artifactId>
+            <version>${jstl.version}</version>
         </dependency>
 
     </dependencies>
