@@ -72,17 +72,22 @@ public class LoginController {
                 mailMessage.setSubject(subject);
                 mailMessage.setText(input);
                 mailMessage.setCc(name);
-                boolean sent = emailSenderService.sendEmail(mailMessage);
+                boolean emailFound = userService.findUserByEmail(name);
+                if(emailFound) {
+                    boolean sent = emailSenderService.sendEmail(mailMessage);
 
-                if (sent) {
-                    modelAndView.addObject("successMessage", "Email Sent!");
+                    if (sent) {
+                        modelAndView.addObject("successMessage", "Email Sent!");
+                        modelAndView.addObject("contactf", new Contactf());
+                        modelAndView.setViewName("contact");
+                    }
                     modelAndView.addObject("contactf", new Contactf());
                     modelAndView.setViewName("contact");
-
+                }else{
+                    modelAndView.addObject("successMessage", "Please Provide Your Account email!");
+                    modelAndView.addObject("contactf", new Contactf());
+                    modelAndView.setViewName("contact");
                 }
-                modelAndView.addObject("contactf", new Contactf());
-                modelAndView.setViewName("contact");
-
             } catch (Exception e) {
                 modelAndView.addObject("errormsg", "Email did not send!");
                 modelAndView.addObject("contactf", new Contactf());
